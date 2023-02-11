@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% block title %}
+    Пост {{ post.text|truncatechars:30 }}
+{% endblock %}
+{% block content %}
+    <div class="container py-5">
+        <div class="card shadow">
+            <div class="row g-0">
+                <div class="col-md-3 my-2 ms-4">
+                    <ul class="list-group list-group-flush fw-bold">
+                        <li class="list-group-item">
+                            Дата публикации: <div class="fw-normal d-inline">{{ post.pub_date|date:"d E Y" }}</div>
+                        </li>
+                        {% if post.group %}
+                            <li class="list-group-item">
+                                Группа:
+                                <a href="{% url 'posts:group_list' post.group.slug %}"
+                                   class="fw-normal d-inline">
+                                    {{ post.group }}
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="list-group-item">
+                            Автор:
+                            {% if post.author.get_full_name %}
+                                <a href="{% url 'posts:profile' post.author.username %}"
+                                   class="fw-normal d-inline">
+                                    {{ post.author.get_full_name }}
+                                </a>
+                            {% else %}
+                                <a href="{% url 'posts:profile' post.author.username %}"
+                                   class="fw-normal d-inline">
+                                    {{ post.author.username }}
+                                </a>
+                            {% endif %}
+                        </li>
+                        <li class="list-group-item">
+                            Всего постов автора:
+                            <div class="fw-normal d-inline">
+                                {{ post.author.posts.count }}
+                            </div>
+                        </li>
+                        {% if is_author %}
+                            <li class="list-group-item">
+                                <a href="{% url 'posts:post_edit' post.pk %}"
+                                   class="fw-normal d-inline"
+                                >
+                                    Редактировать запись
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-md-8 ms-5">
+                    <div class="card-body">
+                        {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+                            <img class="card-img my-3" src="{{ im.url }}">
+                        {% endthumbnail %}
+                        <p>
+                            {{ post.text }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include 'includes/comments.html' %}
+        {% include 'includes/paginator.html' %}
+    </div>
+{% endblock %}
