@@ -15,8 +15,8 @@ class AboutURLTests(TestCase):
     def test_about_templates_urls_and_existence(self):
         """Check if templates and URLs in about app are correct."""
         url_templates = {
-            '/about/author/': 'about/author.html',
-            '/about/tech/': 'about/tech.html',
+            "/about/author/": "about/author.html",
+            "/about/tech/": "about/tech.html",
         }
         for value, expected in url_templates.items():
             with self.subTest(value=value):
@@ -24,8 +24,8 @@ class AboutURLTests(TestCase):
                 self.assertTemplateUsed(response, expected)
 
         url_responses = {
-            reverse_lazy('about:author'): HTTPStatus.OK,
-            reverse_lazy('about:tech'): HTTPStatus.OK,
+            reverse_lazy("about:author"): HTTPStatus.OK,
+            reverse_lazy("about:tech"): HTTPStatus.OK,
         }
         for value, expected in url_responses.items():
             with self.subTest(value=value):
@@ -35,8 +35,8 @@ class AboutURLTests(TestCase):
     def test_about_templates_views(self):
         """Check if namespaces in about app work correctly."""
         url_templates = {
-            reverse_lazy('about:author'): 'about/author.html',
-            reverse_lazy('about:tech'): 'about/tech.html',
+            reverse_lazy("about:author"): "about/author.html",
+            reverse_lazy("about:tech"): "about/tech.html",
         }
         for value, expected in url_templates.items():
             with self.subTest(value=value):

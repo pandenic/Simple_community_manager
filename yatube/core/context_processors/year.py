@@ -5,5 +5,5 @@ from datetime import datetime
 def year(request):
     """Add year variable."""
     return {
-        'year': datetime.now().year,
+        "year": datetime.now().year,
     }

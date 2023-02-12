@@ -118,7 +118,7 @@ class CommentModelTests(TestCase):
             text="Тестовый пост",
         )
         cls.test_comment = Comment.objects.create(
-            text='Text comment text',
+            text="Text comment text",
             post=cls.post,
             author=cls.user,
         )
@@ -128,8 +128,8 @@ class CommentModelTests(TestCase):
         comment = CommentModelTests.test_comment
         self.assertEqual(
             str(comment),
-            f'Text comment te, created '
-            f'{comment.created.strftime("%d.%m.%y_%M:%H")}',
+            f"Text comment te, created "
+            f"{comment.created.strftime('%d.%m.%y_%M:%H')}",
         )
 
     def test_posts_comment_model_has_correct_verbose_help_text(self):
@@ -175,19 +175,19 @@ class FollowModelTests(TestCase):
         """Define initial instances of model Follow before testing."""
         super().setUpClass()
         cls.user = {
-            'author': User.objects.create_user(username="author"),
-            'base': User.objects.create_user(username="base"),
+            "author": User.objects.create_user(username="author"),
+            "base": User.objects.create_user(username="base"),
         }
         cls.test_follow = Follow.objects.create(
-            user=cls.user['base'],
-            author=cls.user['author'],
+            user=cls.user["base"],
+            author=cls.user["author"],
         )
 
     def test_posts_comment_model_has_correct_object_names(self):
         """Check if __str__ function of model Follow works correctly."""
         follow = FollowModelTests.test_follow
         self.assertEqual(
-            str(follow), f'{self.user["base"]} follows {self.user["author"]}',
+            str(follow), f"{self.user['base']} follows {self.user['author']}",
         )
 
     def test_posts_comment_model_has_correct_verbose_and_help_text(self):

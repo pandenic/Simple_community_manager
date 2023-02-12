@@ -179,7 +179,7 @@ def add_comment(request, post_id=None):
         comment.author = request.user
         comment.post = post
         comment.save()
-    return redirect('posts:post_detail', post_id=post_id)
+    return redirect("posts:post_detail", post_id=post_id)
 
 
 @login_required
@@ -205,17 +205,17 @@ def profile_follow(request, username):
     following_profile = get_object_or_404(User, username=username)
     if following_profile == request.user:
         return redirect(
-            reverse_lazy('posts:profile', kwargs={'username': username}),
+            reverse_lazy("posts:profile", kwargs={"username": username}),
         )
-    follower = request.user.follower.filter(author__exact=following_profile)
-    if not follower.exists():
-        Follow.objects.create(
-            user=request.user,
-            author=following_profile,
-        )
+    request.user.follower.filter(
+        author=following_profile,
+    ).get_or_create(
+        user=request.user,
+        author=following_profile,
+    )
 
     return redirect(
-        reverse_lazy('posts:profile', kwargs={'username': username}),
+        reverse_lazy("posts:profile", kwargs={"username": username}),
     )
 
 
@@ -225,12 +225,12 @@ def profile_unfollow(request, username):
     following_profile = get_object_or_404(User, username=username)
     if following_profile == request.user:
         return redirect(
-            reverse_lazy('posts:profile', kwargs={'username': username}),
+            reverse_lazy("posts:profile", kwargs={"username": username}),
         )
-    follower = request.user.follower.filter(author__exact=following_profile)
+    follower = request.user.follower.filter(author=following_profile)
     if follower.exists():
         follower.delete()
 
     return redirect(
-        reverse_lazy('posts:profile', kwargs={'username': username}),
+        reverse_lazy("posts:profile", kwargs={"username": username}),
     )

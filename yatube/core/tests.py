@@ -13,8 +13,8 @@ class ErrorPageTests(TestCase):
 
     def test_core_404_error_page_uses_custom_template(self):
         """Check if 404 error page in core app uses correct template."""
-        unexisted_page = '/unexisted_page/'
-        template = 'core/404.html'
+        unexisted_page = "/unexisted_page/"
+        template = "core/404.html"
         response = self.test_client.get(
             unexisted_page,
         )
@@ -22,8 +22,8 @@ class ErrorPageTests(TestCase):
 
     def test_core_403csrf_error_page_uses_custom_template(self):
         """Check if 403csrf error page in core app uses correct template."""
-        index_page = reverse_lazy('posts:post_create')
-        template = 'core/403csrf.html'
+        index_page = reverse_lazy("posts:post_create")
+        template = "core/403csrf.html"
         response = self.test_client.post(
             index_page,
         )

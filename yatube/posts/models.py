@@ -64,8 +64,8 @@ class Post(models.Model):
         """Used to change the behavior of Post model fields."""
 
         ordering = ("-pub_date",)
-        verbose_name = 'Post'
-        verbose_name_plural = 'Posts'
+        verbose_name = "Post"
+        verbose_name_plural = "Posts"
 
     def __str__(self):
         """Show truncated title of post."""
@@ -92,27 +92,27 @@ class Comment(models.Model):
         verbose_name="Post",
         help_text="Post to which comment is related to",
         on_delete=models.CASCADE,
-        related_name='comments',
+        related_name="comments",
     )
     author = models.ForeignKey(
         User,
         verbose_name="Author",
         help_text="Author of comment",
         on_delete=models.CASCADE,
-        related_name='comments',
+        related_name="comments",
     )
 
     class Meta:
         """Used to change the behavior of Comment model fields."""
 
         ordering = ("-created",)
-        verbose_name = 'Comment'
-        verbose_name_plural = 'Comments'
+        verbose_name = "Comment"
+        verbose_name_plural = "Comments"
 
     def __str__(self):
         """Show truncated title of comment."""
-        return (f'{self.text[:15]}, created '
-                f'{self.created.strftime("%d.%m.%y_%M:%H")}')
+        return (f"{self.text[:15]}, created "
+                f"{self.created.strftime('%d.%m.%y_%M:%H')}")
 
 
 class Follow(models.Model):
@@ -126,23 +126,29 @@ class Follow(models.Model):
         verbose_name="Follower",
         help_text="Follower who going to subscribe to author",
         on_delete=models.CASCADE,
-        related_name='follower',
+        related_name="follower",
     )
     author = models.ForeignKey(
         User,
         verbose_name="Author",
         help_text="Author who is followed by follower",
         on_delete=models.CASCADE,
-        related_name='following',
+        related_name="following",
     )
 
     class Meta:
         """Used to change the behavior of Follow model fields."""
 
         ordering = ("user",)
-        verbose_name = 'Follower'
-        verbose_name_plural = 'Followers'
+        verbose_name = "Follower"
+        verbose_name_plural = "Followers"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "author"],
+                name='Unique_follow',
+            ),
+        ]
 
     def __str__(self):
         """Show follower - following chain."""
-        return f'{self.user} follows {self.author}'
+        return f"{self.user} follows {self.author}"

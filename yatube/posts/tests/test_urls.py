@@ -127,7 +127,7 @@ class PostsURLTests(TestCase):
         "/posts/{post.pk}/comment/"
         """
         post = PostsURLTests.post
-        user = PostsURLTests.test_user['base']
+        user = PostsURLTests.test_user["base"]
 
         Comment.objects.create(
             text="Test comment text",
@@ -224,7 +224,7 @@ class PostsURLTests(TestCase):
         "/profile/<str:username>/follow/"
         "/profile/<str:username>/unfollow/"
         """
-        user = PostsURLTests.test_user['author']
+        user = PostsURLTests.test_user["author"]
 
         url_response_anon_redirect = {
             "/follow/": "/auth/login/?next=/follow/",

@@ -39,17 +39,17 @@ class PostsViewTests(TestCase):
             description="author_group group description",
         )
         small_gif = (
-            b'\x47\x49\x46\x38\x39\x61\x02\x00'
-            b'\x01\x00\x80\x00\x00\x00\x00\x00'
-            b'\xFF\xFF\xFF\x21\xF9\x04\x00\x00'
-            b'\x00\x00\x00\x2C\x00\x00\x00\x00'
-            b'\x02\x00\x01\x00\x00\x02\x02\x0C'
-            b'\x0A\x00\x3B'
+            b"\x47\x49\x46\x38\x39\x61\x02\x00"
+            b"\x01\x00\x80\x00\x00\x00\x00\x00"
+            b"\xFF\xFF\xFF\x21\xF9\x04\x00\x00"
+            b"\x00\x00\x00\x2C\x00\x00\x00\x00"
+            b"\x02\x00\x01\x00\x00\x02\x02\x0C"
+            b"\x0A\x00\x3B"
         )
         uploaded = SimpleUploadedFile(
-            name='small.gif',
+            name="small.gif",
             content=small_gif,
-            content_type='image/gif',
+            content_type="image/gif",
         )
         cls.test_post = Post.objects.create(
             text="Тестовый пост author",
@@ -109,7 +109,6 @@ class PostsViewTests(TestCase):
                 kwargs={"post_id": post.pk},
             ): "posts/post_detail.html",
         }
-
         for value, expected in views_templates_names_anon.items():
             with self.subTest(value=value):
                 for client_type in self.test_client:
@@ -117,6 +116,11 @@ class PostsViewTests(TestCase):
                     response = self.test_client[client_type].get(value)
                     self.assertTemplateUsed(response, expected)
 
+        views_templates_names_anon[
+            reverse_lazy(
+                "posts:follow_index",
+            )
+        ] = "posts/follow.html"
         for value, expected in views_templates_names_anon.items():
             with self.subTest(value=value):
                 for client_type in self.test_client_auth:
@@ -202,9 +206,9 @@ class PostsViewTests(TestCase):
     def test_posts_post_detail_view_uses_correct_context(self):
         """Check if post_detail view in posts app uses correct context."""
         post = PostsViewTests.test_post
-        user = PostsViewTests.test_user['base']
+        user = PostsViewTests.test_user["base"]
         test_comment = Comment.objects.create(
-            text='Text comment text',
+            text="Text comment text",
             post=post,
             author=user,
         )
@@ -258,10 +262,10 @@ class PostsViewTests(TestCase):
 
     def test_posts_index_view_cache_works_correctly(self):
         """Check if caching in index view in posts app works correctly."""
-        user = PostsViewTests.test_user['author']
+        user = PostsViewTests.test_user["author"]
 
         content_before = (
-            self.test_client['guest']
+            self.test_client["guest"]
             .get(
                 reverse_lazy("posts:index"),
             )
@@ -273,7 +277,7 @@ class PostsViewTests(TestCase):
         )
 
         content_after = (
-            self.test_client['guest']
+            self.test_client["guest"]
             .get(
                 reverse_lazy("posts:index"),
             )
@@ -283,7 +287,7 @@ class PostsViewTests(TestCase):
 
         cache.clear()
         content_before = (
-            self.test_client['guest']
+            self.test_client["guest"]
             .get(
                 reverse_lazy("posts:index"),
             )
@@ -292,7 +296,7 @@ class PostsViewTests(TestCase):
         self.assertNotEqual(content_before, content_after)
 
         content_after = (
-            self.test_client_auth['auth_base']
+            self.test_client_auth["auth_base"]
             .get(
                 reverse_lazy("posts:index"),
             )
@@ -304,48 +308,53 @@ class PostsViewTests(TestCase):
         """Check if follow_index view in posts app works correctly."""
         user = PostsViewTests.test_user
         Follow.objects.create(
-            user=user['base'],
-            author=user['author'],
+            user=user["base"],
+            author=user["author"],
         )
 
-        response = self.test_client_auth['auth_base'].get(
+        response = self.test_client_auth["auth_base"].get(
             reverse_lazy("posts:follow_index"),
         )
         self.check_post(response.context["page_obj"][0])
 
-        response = self.test_client_auth['auth_author'].get(
+        response = self.test_client_auth["auth_author"].get(
             reverse_lazy("posts:follow_index"),
         )
         self.assertEqual(len(response.context["page_obj"]), 0)
 
-    def test_posts_profile_follow_unfollow_view_use_correct_context(self):
-        """Check if views in posts app works correctly.
-
-        "profile_follow"
-        "profile_unfollow"
-        """
+    def test_posts_profile_follow_view_use_correct_context(self):
+        """Check if profile_follow view in posts app works correctly."""
         user = PostsViewTests.test_user
         follow_count = Follow.objects.count()
 
-        self.test_client_auth['auth_base'].get(
+        self.test_client_auth["auth_base"].get(
             reverse_lazy(
                 "posts:profile_follow",
                 kwargs={
-                    "username": user['author'].username,
+                    "username": user["author"].username,
                 },
             ),
         )
         self.assertEqual(Follow.objects.count(), follow_count + 1)
 
-        self.test_client_auth['auth_base'].get(
+    def test_posts_profile_unfollow_view_use_correct_context(self):
+        """Check if profile_unfollow view in posts app works correctly."""
+        user = PostsViewTests.test_user
+        Follow.objects.create(
+            user=user["base"],
+            author=user["author"],
+        )
+
+        follow_count = Follow.objects.count()
+        self.test_client_auth["auth_base"].get(
             reverse_lazy(
                 "posts:profile_unfollow",
                 kwargs={
-                    "username": user['author'].username,
+                    "username": user["author"].username,
                 },
             ),
         )
-        self.assertEqual(Follow.objects.count(), follow_count)
+        self.assertEqual(Follow.objects.count(), follow_count - 1)
 
 
 class PaginatorTest(TestCase):
@@ -473,10 +482,10 @@ class PaginatorTest(TestCase):
     def test_posts_follow_index_view_paginator(self):
         """Check if follow_index in index view shows works correctly."""
         user = PaginatorTest.test_user
-        posts_quantity = Post.objects.filter(author=user['author']).count()
+        posts_quantity = Post.objects.filter(author=user["author"]).count()
         Follow.objects.create(
-            user=user['base'],
-            author=user['author'],
+            user=user["base"],
+            author=user["author"],
         )
 
         paginator_dict = {

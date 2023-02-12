@@ -1,11 +1,11 @@
 """Administrator panel settings for posts app."""
 from django.contrib import admin
 
-from posts.models import Post, Group
+from posts.models import Post, Group, Comment, Follow
 
 
 class PostAdmin(admin.ModelAdmin):
-    """Custom settings to posts admin panel."""
+    """Custom settings for posts admin panel."""
 
     list_display = (
         "pk",
@@ -21,7 +21,7 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class GroupAdmin(admin.ModelAdmin):
-    """Custom settings to groups admin panel."""
+    """Custom settings for groups admin panel."""
 
     list_display = (
         "pk",
@@ -41,5 +41,34 @@ class GroupAdmin(admin.ModelAdmin):
     post_count.short_description = "Posts quantity"
 
 
+class CommentAdmin(admin.ModelAdmin):
+    """Custom settings for comment admin panel."""
+
+    list_display = (
+        "pk",
+        "text",
+        "created",
+        "post",
+        "author",
+    )
+    search_fields = ("text",)
+    list_filter = ("created",)
+    empty_value_display = "-пусто-"
+
+
+class FollowAdmin(admin.ModelAdmin):
+    """Custom settings for follow admin panel."""
+
+    list_display = (
+        "user",
+        "author",
+    )
+    search_fields = ("user", "author")
+    list_filter = ("user",)
+    empty_value_display = "-пусто-"
+
+
 admin.site.register(Post, PostAdmin)
 admin.site.register(Group, GroupAdmin)
+admin.site.register(Comment, CommentAdmin)
+admin.site.register(Follow, FollowAdmin)
