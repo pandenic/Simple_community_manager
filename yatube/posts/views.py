@@ -207,9 +207,7 @@ def profile_follow(request, username):
         return redirect(
             reverse_lazy("posts:profile", kwargs={"username": username}),
         )
-    request.user.follower.filter(
-        author=following_profile,
-    ).get_or_create(
+    Follow.objects.get_or_create(
         user=request.user,
         author=following_profile,
     )
@@ -227,7 +225,7 @@ def profile_unfollow(request, username):
         return redirect(
             reverse_lazy("posts:profile", kwargs={"username": username}),
         )
-    follower = request.user.follower.filter(author=following_profile)
+    follower = Follow.objects.filter(author=following_profile)
     if follower.exists():
         follower.delete()
 

@@ -336,6 +336,22 @@ class PostsViewTests(TestCase):
             ),
         )
         self.assertEqual(Follow.objects.count(), follow_count + 1)
+        self.assertEqual(
+            user["author"],
+            User.objects.filter(
+                username=user["author"].username,
+            ).filter(
+                following__user=user["base"],
+            )[0],
+        )
+        self.assertEqual(
+            user["base"],
+            User.objects.filter(
+                username=user["base"].username,
+            ).filter(
+                follower__author=user["author"],
+            )[0],
+        )
 
     def test_posts_profile_unfollow_view_use_correct_context(self):
         """Check if profile_unfollow view in posts app works correctly."""

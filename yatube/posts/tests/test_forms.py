@@ -49,9 +49,9 @@ class PostsPostTests(TestCase):
             author=cls.auth_user,
             image=cls.uploaded_img,
         )
-        cls.APP_MEDIA_DIR = Post._meta.get_field("image").upload_to
+        cls.app_media_dir = Post._meta.get_field("image").upload_to
         cls.small_gif_path = os.path.join(
-            cls.APP_MEDIA_DIR, cls.uploaded_img.name,
+            cls.app_media_dir, cls.uploaded_img.name,
         )
 
     @classmethod
@@ -93,7 +93,7 @@ class PostsPostTests(TestCase):
             "image": create_img,
         }
         small_create_gif_path = os.path.join(
-            self.APP_MEDIA_DIR,
+            self.app_media_dir,
             form_data["image"].name,
         )
         response = self.test_client.post(
@@ -166,7 +166,7 @@ class PostsPostTests(TestCase):
         self.assertEqual(post.author, user)
 
         small_changed_gif_path = os.path.join(
-            self.APP_MEDIA_DIR,
+            self.app_media_dir,
             str(form_data["image"]),
         )
         self.assertEqual(

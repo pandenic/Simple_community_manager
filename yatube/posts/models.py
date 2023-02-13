@@ -142,12 +142,12 @@ class Follow(models.Model):
         ordering = ("user",)
         verbose_name = "Follower"
         verbose_name_plural = "Followers"
-        constraints = [
+        constraints = (
             models.UniqueConstraint(
-                fields=["user", "author"],
+                fields=("user", "author"),
                 name='Unique_follow',
             ),
-        ]
+        )
 
     def __str__(self):
         """Show follower - following chain."""
