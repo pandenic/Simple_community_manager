@@ -2,32 +2,12 @@
 
 ## Description
 
-Module is used to make and manage posts, unite them to communities.
+The module makes and manages posts and unites them into communities.
 
-## Technologies
+| Technologies | Links |
+| ---- | ---- |
+| ![git_Django](https://github.com/pandenic/Foodgram_project/assets/114985447/87a6dd6e-127f-47e7-bbd4-a6c28fcddf76) | [Django](https://www.djangoproject.com/) |
+| ![git_Unittest](https://github.com/pandenic/hw05_final/assets/114985447/43851cd6-d1ff-4aa3-8d81-3b7eaf88979c) | [Unittest](https://docs.python.org/3/library/unittest.html) |
+| ![git_pytest](https://github.com/pandenic/hw05_final/assets/114985447/096e8e9f-e258-46fa-ae61-4e11107e2907) | [pytest](https://docs.pytest.org/en/7.4.x/) |
 
-1. Django
-  - Django ORM
-  - CBV (Class-Based View); view-functions
-  - DTL (Django Template Language)
-2. Pytest
-3. Unittest
 
-## Apps
-
-1. users
-2. post
-3. auth
-
-## Pages
-
-1. Index page
-2. Group page
-3. Profile page
-4. Sign in page
-5. Login page
-6. Forget password page
-7. Group page
-8. Post detail page
-9. Post create page
-10. Post change page
